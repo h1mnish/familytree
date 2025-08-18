@@ -12,16 +12,18 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -2; /* peeche */
+    z-index: -2;
 }
 
+/* Gradient Overlay */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(33, 29, 29, 0.67); /* transparent overlay */
+    background: linear-gradient(135deg, rgba(0, 64, 128, 0.6), rgba(0, 128, 64, 0.6));
+    backdrop-filter: blur(3px);
     z-index: -1;
 }
 
@@ -30,17 +32,41 @@ body {
     margin: 0;
     padding: 20px;
     text-align: center;
-    color: #480fa9;
+    color: #2e5f7d;
 }
 
 /* Title */
 h2 {
     font-family:'Georgia', serif;
-    font-size: 34px;
+    font-size: 40px;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     position: relative;
     z-index: 1;
+    color: #f1f8e9;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    margin-top: 15px;
+}
+
+/* Search box */
+#searchBox {
+    padding: 12px;
+    width: 300px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 2px solid #2e5f7d;
+    margin: 20px 0;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 8px rgba(100,221,23,0.4);
+    transition: 0.3s;
+}
+#searchBox:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(0,255,128,0.8);
+    border-color: #00e676;
 }
 
 /* Tree */
@@ -58,34 +84,50 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 30px 0;
+    margin: 35px 0;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
 }
 
-/* Members */
+/* Members (Glassmorphism look) */
 .member {
-    background: rgba(255,255,255,0.9);
-    padding: 14px 25px;
-    border-radius: 12px;
+    background: rgba(152, 22, 22, 0.2);
+    backdrop-filter: blur(8px);
+    padding: 16px 28px;
+    border-radius: 14px;
     font-weight: bold;
-    color: #2e7d32;
+    color: #e31d65;
     cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
+    transition: all 0.3s;
     position: relative;
-    font-size: 14px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-size: 17px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+.member:hover {
+    background: rgba(232,245,233,0.85);
+    transform: scale(1.07);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
 }
 
-.member:hover {
-    background: #e8f5e9;
-    transform: scale(1.05);
+/* Highlighted search */
+.highlight {
+    background: linear-gradient(90deg, #ffeb3b, #ff9800) !important;
+    border: 2px solid red;
+    color: black !important;
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 5px red; }
+    50% { box-shadow: 0 0 15px red; }
+    100% { box-shadow: 0 0 5px red; }
 }
 
 /* Number circle */
 .member-number {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: #000;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
     color: #fff;
     display: flex;
     align-items: center;
@@ -98,7 +140,11 @@ h2 {
     transform: translateX(-50%);
     cursor: pointer;
     z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 3px 7px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+}
+.member-number:hover {
+    transform: translateX(-50%) scale(1.1);
 }
 
 /* Children */
@@ -106,11 +152,10 @@ h2 {
     display: none;
     flex-direction: row;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 55px;
 }
-
 .children > .member-wrapper {
-    margin: 0 20px;
+    margin: 0 22px;
 }
 
 /* Modal */
@@ -118,30 +163,29 @@ h2 {
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.65);
     justify-content: center;
     align-items: center;
     z-index: 999;
 }
-
 .modal-content {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    min-width: 300px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    font-size: 16px;
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 15px;
+    min-width: 320px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    font-size: 17px;
+    animation: zoomIn 0.3s ease;
+}
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 /* Fade animation */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px);}
+    from { opacity: 0; transform: translateY(15px);}
     to { opacity: 1; transform: translateY(0);}
-}
-
-.member-wrapper { 
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
 }
 </style>
 </head>
@@ -156,12 +200,15 @@ h2 {
 
 <h2>TYAGI FAMILY TREE</h2>
 
+<!-- 🔎 Search box -->
+<input type="text" id="searchBox" placeholder="Search family member...">
+
 <div class="tree">
 
   <!-- Jagmal -->
   <div class="member-wrapper">
     <div class="member-number" data-id="jagmal">1</div>
-    <div class="member" data-id="jagmal">Jagmal Singh & Santosh Devi</div>
+    <div class="member" data-id="jagmal">Jagmal Singh & Savitri Devi</div>
     <div class="children" id="children-jagmal">
       
       <!-- Rajesh -->
@@ -219,11 +266,11 @@ h2 {
         <div class="children" id="children-manoj">
           <div class="member-wrapper">
             <div class="member-number" data-id="himanshu">12</div>
-            <div class="member" data-id="himanshu">Versha Tyagi</div>
+            <div class="member" data-id="himanshu">Himanshu Tyagi</div>
           </div>
           <div class="member-wrapper">
             <div class="member-number" data-id="versha">13</div>
-            <div class="member" data-id="versha">Himanshu Tyagi</div>
+            <div class="member" data-id="versha">Versha Tyagi</div>
           </div>
         </div>
       </div>
@@ -289,6 +336,26 @@ window.addEventListener('load', () => {
         el.style.opacity = 0;
         el.style.animation = `fadeIn 0.5s forwards ${i*0.2}s`;
     });
+});
+
+// 🔎 Search functionality
+const searchBox = document.getElementById("searchBox");
+const members = document.querySelectorAll(".member");
+
+searchBox.addEventListener("input", function() {
+  const query = this.value.toLowerCase();
+  members.forEach(m => {
+    m.classList.remove("highlight");
+    if (query && m.textContent.toLowerCase().includes(query)) {
+      m.classList.add("highlight");
+      // Expand parents automatically
+      let parent = m.closest(".children");
+      while (parent) {
+        parent.style.display = "flex";
+        parent = parent.parentElement.closest(".children");
+      }
+    }
+  });
 });
 </script>
 
